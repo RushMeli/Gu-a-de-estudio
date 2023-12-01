@@ -1,0 +1,490 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Preguntas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+        .question-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #timer {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        #question {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .options button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 5px;
+            width: 100%;
+            cursor: pointer;
+        }
+        #score {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        #nextButton {
+            font-size: 16px;
+            padding: 10px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="question-container">
+    <div id="timer">Tiempo restante: <span id="countdown">30</span> segundos</div>
+    <div id="question">Pregunta: ¿Cuál de las siguientes no es una barrera del aprendizaje?</div>
+    <div class="options">
+        <button id="optionA" onclick="checkAnswer('a')">a) Dificultades de concentración</button>
+        <button id="optionB" onclick="checkAnswer('b')">b) Motivación adecuada</button>
+        <button id="optionC" onclick="checkAnswer('c')">c) Falta de recursos educativos</button>
+        <button id="optionD" onclick="checkAnswer('d')">d) Apoyo familiar</button>
+    </div>
+    <div id="score">Puntaje: <span id="currentScore">0</span></div>
+    <button id="nextButton" onclick="nextQuestion()">Vas bien Siguiente Pregunta</button>
+</div>
+
+<script>
+    let questions = [
+        {
+            question: "1.-¿Cuál de las siguientes no es una barrera del aprendizaje?",
+            options: {
+                a: "Dificultades de concentración",
+                b: "Motivación adecuada",
+                c: "Falta de recursos educativos",
+                d: "Apoyo familiar"
+            },
+            correctAnswer: "b"
+        },
+        {
+            question: "2.-¿Cuál es una posible causa de bajo rendimiento escolar?",
+            options: {
+                a: "Alta motivación del estudiante",
+                b: "Estrategias de estudio no efectivas",
+                c: "Problemas de salud mental no tratados",
+                d: "Apoyo adecuado de los maestros"
+            },
+            correctAnswer: "b"
+        },
+{
+            question: "3.-¿Qué define a los problemas de aprendizaje?",
+            options: {
+                a: "Limitaciones en la inteligencia del estudiante",
+                b: "Dificultades persistentes para aprender ciertas habilidades",
+                c: "Falta de interés en el proceso educativo",
+                d: "Cambios normales en el desarrollo cognitivo"
+            },
+            correctAnswer: "b"
+        },
+{
+            question: "4.-¿Qué se puede considerar una dificultad de aprendizaje específica?",
+            options: {
+                a: "Desinterés temporal en el estudio",
+                b: "Dificultades persistentes con la lectura",
+                c: "Cambios normales en el desarrollo cognitivo",
+                d: "Falta de participación en actividades extracurriculares"
+ 
+            },
+            correctAnswer: "b"
+        },
+{
+            question: "5.-¿Cuál de las siguientes es una técnica de aplicación en el aula para abordar barreras del aprendizaje?",
+            options: {
+                a: "Ignorar las necesidades individuales de los estudiantes",
+                b: "Enseñar de una manera única para todos",
+                c: "Adaptar la enseñanza según estilos de aprendizaje",
+                d: "No proporcionar retroalimentación"
+ 
+            },
+            correctAnswer: "c"
+        },
+{
+            question: "6.-¿Cuál es una estrategia pedagógica efectiva para mejorar el rendimiento académico?",
+            options: {
+                a: "Mantener un ambiente de aprendizaje desorganizado",
+                b: "Ignorar el progreso individual de los estudiantes",
+                c: "Proporcionar retroalimentación constructiva",
+                d: "No adaptar la enseñanza a diferentes estilos de aprendizaje"
+ 
+            },
+            correctAnswer: "c"
+        },
+{
+            question: "7.-¿Qué puede contribuir a las dificultades de aprendizaje en el aula?",
+            options: {
+                a: "Variedad en los métodos de enseñanza",
+                b: "Adaptaciones para necesidades individuales",
+                c: "Falta de apoyo para estudiantes con necesidades especiales",
+                d: "Fomentar un ambiente inclusivo"
+
+            },
+            correctAnswer: "d"
+        },
+{
+            question: "8.-¿Qué papel juega la comunicación efectiva entre maestros y estudiantes en la superación de barreras?",
+            options: {
+                a: "No es relevante para el proceso de aprendizaje",
+                b: "Facilita la comprensión mutua y el apoyo",
+                c: "Puede aumentar la competencia académica",
+                d: "Limita la participación activa en el aula"
+
+            },
+            correctAnswer: "b"
+        },
+{
+            question: "9.-¿Cuál es una barrera común para el aprendizaje inclusivo?",
+            options: {
+                a: "Reconocimiento y respeto de la diversidad",
+                b: "Estigmatización y falta de aceptación",
+                c: "Acceso igualitario a recursos educativos",
+                d: "Fomentar un ambiente inclusivo"
+
+            },
+            correctAnswer: "b"
+        },
+{
+            question: "10.-¿Cuál es una técnica efectiva para abordar las barreras emocionales en el aprendizaje?",
+            options: {
+                a: "Ignorar las emociones de los estudiantes",
+                b: "No proporcionar apoyo emocional",
+                c: "Minimizar la importancia de las experiencias personales",
+                d: "Fomentar la expresión emocional y el diálogo"
+
+            },
+            correctAnswer: "d"
+        },
+{
+            question: "11.-Ana tiene dificultades para leer y comprender textos. ¿Qué estrategia pedagógica podría ayudarla?",
+            options: {
+                a: "Ignorar sus dificultades",
+                b: "Proporcionar material más avanzado",
+                c: "Implementar técnicas específicas para mejorar la lectura",
+                d: "Cambiar su asignatura principal"
+
+            },
+            correctAnswer: "c"
+        },
+
+{
+            question: "12.-Javier muestra bajo rendimiento escolar a pesar de tener habilidades. ¿Qué podría ser una barrera potencial?",
+            options: {
+                a: "Desinterés en el aprendizaje",
+                b: "Falta de habilidades",
+                c: "Problemas de salud mental",
+                d: "Apoyo adecuado en casa"
+            },
+            correctAnswer: "a"
+        },
+{
+            question: "13.-María enfrenta dificultades de concentración en el aula. ¿Qué técnica podría ayudarla?",
+            options: {
+                a: "Aumentar la carga de tareas",
+                b: "Aumentar la presión académica",
+                c: "Ignorar su situación",
+                d: "Realizar actividades para diferentes estilos de aprendizaje"
+            },
+            correctAnswer: "d"
+        },
+{
+            question: "14.-Juan tiene problemas de aprendizaje específicos en matemáticas. ¿Cuál es una estrategia efectiva?",
+            options: {
+                a: "No adaptar la enseñanza",
+                b: "Proporcionar ejercicios complejos",
+                c: "Individualizar la enseñanza según sus necesidades",
+                d: "Enfocarse solo en áreas fuertes"
+            },
+            correctAnswer: "c"
+        },
+{
+            question: "15.-Carla se siente excluida en el aula debido a sus necesidades especiales. ¿Qué estrategia promovería la inclusión?",
+            options: {
+                a: "No abordar diferencias individuales",
+                b: "Adaptar el entorno para sus necesidades",
+                c: "Ignorar las preocupaciones de Carla",
+                d: "Separarla del resto de los estudiantes"
+
+        },
+            correctAnswer: "b"
+        },
+
+{
+            question: "16.-Marta muestra resistencia a participar en actividades grupales. ¿Cuál podría ser una barrera emocional?",
+            options: {
+                a: "Exceso de apoyo emocional",
+                b: "Falta de interés en la actividad",
+                c: "Experiencias previas negativas",
+                d: "No adaptar las actividades"
+
+        },
+            correctAnswer: "c"
+       },
+{
+            question: "17.-Alberto, a pesar de esforzarse, no logra mejorar su rendimiento. ¿Qué enfoque pedagógico podría ayudarlo?",
+            options: {
+                a: "Mantener las mismas estrategias de enseñanza",
+                b: "Fomentar la retroalimentación constructiva",
+                c: "No considerar su progreso individual",
+                d: "Desmotivarlo aún más"
+
+        },
+            correctAnswer: "b"
+       },
+
+{
+            question: "18.-Beatriz tiene problemas de atención en clase. ¿Qué técnica de aplicación en el aula podría beneficiarla?",
+            options: {
+                a: "Ignorar sus dificultades",
+                b: "Proporcionar un entorno estructurado",
+                c: "Aumentar la complejidad de las tareas",
+                d: "No prestar atención a sus necesidades específicas"
+
+        },
+            correctAnswer: "b"
+       },
+
+{
+            question: "19.-Luis muestra interés en la música, pero tiene dificultades con la lectura. ¿Qué estrategia podría ser efectiva?",
+            options: {
+                a: "Fomentar su interés en otras áreas",
+                b: "Ignorar su interés en la música",
+                c: "Integrar la música en actividades de lectura",
+                d: "Separar la música de sus actividades académicas"
+
+        },
+            correctAnswer: "c"
+       },
+
+{
+            question: "20.-Sofía experimenta ansiedad durante los exámenes. ¿Cuál es una técnica para abordar esta barrera emocional?",
+            options: {
+                a: "Aumentar la presión durante los exámenes",
+                b: "No considerar la ansiedad como un problema",
+                c: "Proporcionar técnicas de manejo del estrés",
+                d: "No ofrecer apoyo emocional durante los exámenes"
+
+        },
+            correctAnswer: "c"
+       },
+
+{
+            question: "21.-Juan tiene dificultades significativas para leer. ¿Cuál podría ser un signo de problemas de aprendizaje específicos?",
+            options: {
+                a: "Desinterés general en el aprendizaje",
+                b: "Dificultades en todas las materias",
+                c: "Habilidades avanzadas en matemáticas",
+                d: "Dificultades al leer y comprender palabras"
+
+        },
+            correctAnswer: "d"
+       },
+
+{
+            question: "22.-María muestra un rendimiento académico por debajo de su capacidad. ¿Qué puede ser una causa probable de bajo rendimiento escolar?",
+            options: {
+                a: "Falta de habilidades",
+                b: "Desinterés en el aprendizaje",
+                c: "Apoyo adecuado en casa",
+                d: "Enfoque pedagógico efectivo"
+        },
+            correctAnswer: "a"
+       },
+{
+            question: "23.-Javier tiene problemas de atención a las clases auditivas en clase. ¿Qué técnica de aplicación en el aula podría ayudar?",
+            options: {
+                a: "Ignorar sus dificultades",
+                b: "Proporcionar actividades monótonas",
+                c: "Adaptar el entorno para mejorar la atención",
+                d: "Aumentar la carga de tareas"
+        },
+            correctAnswer: "c"
+       },
+
+{
+            question: "24.-Ana muestra resistencia a participar en actividades grupales. ¿Cuál podría ser una estrategia pedagógica efectiva?",
+            options: {
+                a: "Ignorar su resistencia",
+                b: "Separarla del resto de los estudiantes",
+                c: "Fomentar actividades individualizadas",
+                d: "Aumentar la presión académica"
+
+        },
+            correctAnswer: "c"
+       },
+{
+            question: "25.-Carlos tiene dificultades para seguir instrucciones verbales. ¿Cuál es una técnica de aplicación en el aula que podría beneficiarlo?",
+            options: {
+                a: "Aumentar la presión durante los exámenes",
+                b: "Proporcionar apoyo emocional y técnicas de manejo del estrés",
+                c: "No considerar la ansiedad como un problema",
+                d: "Ignorar sus emociones durante los exámenes"
+        },
+            correctAnswer: "c"
+       },
+{
+            question: "26.-Marta experimenta ansiedad durante los exámenes. ¿Qué estrategia pedagógica podría ser efectiva?",
+            options: {
+                a: "No proporcionar instrucciones verbales",
+                b: "Ignorar sus dificultades",
+                c: "Proporcionar instrucciones escritas",
+                d: "Aumentar la complejidad de las instrucciones"
+        },
+            correctAnswer: "c"
+       },
+
+{
+            question: "27.-Pablo muestra desinterés general en todas las asignaturas. ¿Cuál es una estrategia pedagógica para abordar este problema?",
+            options: {
+                a: "Fomentar su desinterés",
+                b: "Ignorar sus preferencias académicas",
+                c: "Adaptar la enseñanza según sus intereses",
+                d: "No considerar las preferencias del estudiante"
+
+        },
+            correctAnswer: "c"
+       },
+{
+            question: "28.-Lucía tiene dificultades con las habilidades sociales. ¿Cuál podría ser una técnica de aplicación en el aula?",
+            options: {
+                a: "Ignorar sus dificultades sociales",
+                b: "Proporcionar actividades exclusivamente individuales",
+                c: "Fomentar actividades que promuevan la interacción",
+                d: "No prestar atención a las habilidades sociales"
+        },
+            correctAnswer: "c"
+       },
+{
+            question: "29.-Roberto muestra habilidades destacadas en ciertas áreas pero lucha en otras. ¿Qué enfoque pedagógico podría ser beneficioso?",
+            options: {
+                a: "Enfocarse solo en sus áreas fuertes",
+                b: "Ignorar sus habilidades destacadas",
+                c: "Adaptar la enseñanza según sus necesidades individuales",
+                d: "Desestimar sus habilidades destacadas"
+        },
+            correctAnswer: "c"
+       },
+{
+            question: "30.-Laura enfrenta dificultades de aprendizaje específicas en lectura y escritura. ¿Qué estrategia pedagógica podría ayudarla?",
+            options: {
+                a: "Ignorar sus dificultades",
+                b: "Proporcionar ejercicios enfocados en dislexia",
+                c: "Individualizar la enseñanza según sus necesidades en matemáticas",
+                d: "No prestar atención a sus necesidades específicas"
+        },
+            correctAnswer: "b"
+       },
+
+
+
+
+        // Agrega más preguntas de manera similar
+    ];
+
+    let currentQuestionIndex = 0;
+    let time = 30; // segundos
+    let countdown = document.getElementById('countdown');
+    let currentScore = 0;
+    let nextButton = document.getElementById('nextButton');
+
+    function loadQuestion() {
+        let currentQuestion = questions[currentQuestionIndex];
+
+        document.getElementById('question').textContent = `Pregunta: ${currentQuestion.question}`;
+
+        for (let option in currentQuestion.options) {
+            document.getElementById(`option${option.toUpperCase()}`).textContent = `${option}) ${currentQuestion.options[option]}`;
+        }
+    }
+
+    loadQuestion();
+
+    function updateTimer() {
+        countdown.textContent = time;
+        if (time > 0) {
+            time--;
+        } else {
+            alert('¡Tiempo agotado!');
+            // Aquí puedes agregar código para manejar el tiempo agotado
+            nextQuestion();
+        }
+    }
+
+    setInterval(updateTimer, 1000);
+
+    function checkAnswer(selectedOption) {
+        let currentQuestion = questions[currentQuestionIndex];
+
+        // Marcar la respuesta correcta en verde
+        document.getElementById(`option${currentQuestion.correctAnswer.toUpperCase()}`).style.backgroundColor = 'green';
+
+        // Marcar las respuestas incorrectas en rojo
+        for (let option in currentQuestion.options) {
+            if (option !== currentQuestion.correctAnswer) {
+                document.getElementById(`option${option.toUpperCase()}`).style.backgroundColor = 'red';
+            }
+        }
+
+        // Actualizar el puntaje
+        if (selectedOption === currentQuestion.correctAnswer) {
+            currentScore++;
+        }
+
+        // Actualizar el puntaje mostrado
+        document.getElementById('currentScore').textContent = currentScore;
+
+        // Deshabilitar los botones de opción después de seleccionar una respuesta
+        for (let option in currentQuestion.options) {
+            document.getElementById(`option${option.toUpperCase()}`).disabled = true;
+        }
+
+        // Habilitar el botón de siguiente pregunta
+        nextButton.disabled = false;
+    }
+
+    function nextQuestion() {
+        // Restablecer estilos de botones
+        for (let option in questions[currentQuestionIndex].options) {
+            document.getElementById(`option${option.toUpperCase()}`).style.backgroundColor = '';
+        }
+
+        // Habilitar los botones de opción para la siguiente pregunta
+        for (let option in questions[currentQuestionIndex].options) {
+            document.getElementById(`option${option.toUpperCase()}`).disabled = false;
+        }
+
+        // Deshabilitar el botón de siguiente pregunta hasta que se seleccione una respuesta
+        nextButton.disabled = true;
+
+        // Incrementar el índice de pregunta actual
+        currentQuestionIndex++;
+
+        // Verificar si hay más preguntas
+        if (currentQuestionIndex < questions.length) {
+            // Cargar y mostrar la siguiente pregunta
+            loadQuestion();
+            // Reiniciar el temporizador
+            time = 30;
+        } else {
+            // Fin del juego
+            alert('¡Fin del juego Gracias por Participar ! Puntaje final: ' + currentScore);
+        }
+    }
+</script>
+
+</body>
+</html>
